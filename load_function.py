@@ -49,7 +49,7 @@ def load_data_apriori(txtfile, support,verbose = False):
         print("The size of the list of the candidate for the second iteration is {} MB".format(C1_size))
 
 
-    return BASKETS, items_dict, C1, basket_size, items_dict_size, C1_size
+    return BASKETS, items_dict, [C1], basket_size, items_dict_size, C1_size,load_time, threshold
 
 
 

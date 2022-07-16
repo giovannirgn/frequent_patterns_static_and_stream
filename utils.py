@@ -62,3 +62,75 @@ def filter_infrequent_items(dict_,threshold):
         del dict_[item]
 
     return dict_
+
+
+def filter_baskets(basket,list_):
+
+    filtered_basket = []
+
+    for item in basket:
+
+        if item in list_:
+
+            filtered_basket.append(item)
+
+    sorted(filtered_basket)
+
+    return filtered_basket
+
+
+def combinations_k_elements(list_,k):
+
+    list_of_combinations = []
+
+    def backtrack(start,comb):
+
+        if len(comb) == k:
+
+            list_of_combinations.append(tuple(sorted(comb.copy())))
+
+            return
+
+        for i in range(start,len(list_)):
+
+            comb.append(list_[i])
+
+            backtrack(i+1,comb)
+
+            comb.pop()
+
+    backtrack(0,[])
+
+    return list_of_combinations
+
+
+
+def check_if_is_in_dict_and_count(item,dict_):
+
+    if item in dict_:
+
+        dict_[item] += 1
+
+    else:
+
+        dict_[item] = 1
+
+    return dict_
+
+def frequent_item_lists(dict_):
+
+    items_list  = []
+
+    for key in dict_:
+
+        if isinstance(key,int):
+
+            items_list.append(key)
+
+        else:
+
+            for i in key:
+
+                items_list.append(i)
+
+    return list(set(items_list))
