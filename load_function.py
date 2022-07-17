@@ -27,16 +27,37 @@ def load_data_apriori(txtfile, support,verbose = False):
 
         BASKETS.append(basket)
 
+    C1_before_size = get_size_in_MB(C1)
+
+    len_before_C1 = len(C1)
+
     threshold = round(support * len(BASKETS), 0)
 
     C1 = filter_infrequent_items(C1, threshold)
+
+    len_after_C1 = len(C1)
+
     items_dict = reverse_dict(items_dict)
 
     load_time = time_needed(t0)
 
     basket_size = get_size_in_MB(BASKETS)
-    C1_size = get_size_in_MB(C1)
+
     items_dict_size = get_size_in_MB(items_dict)
+
+    stats = {}
+
+    stats["time"] = {}
+
+    stats["time"]["load_and_1st_pass"] = load_time
+
+    stats["sizes"] = {}
+
+    stats["sizes"]["C1"] = C1_before_size
+
+    stats["len"] = {}
+
+    stats["len"]["C1"] = {"before":len_before_C1,"after":len_after_C1}
 
     if verbose == True:
 
@@ -46,10 +67,15 @@ def load_data_apriori(txtfile, support,verbose = False):
 
         print("The size of the list of the items dict is {} MB".format(items_dict_size))
 
-        print("The size of the list of the candidate for the second iteration is {} MB".format(C1_size))
+        print("The size of the list of the candidate for the second iteration before filtering the infrequent items is {} MB".format(C1_before_size))
 
+        print("C1 contains {} elements, before dropping the infrequent ones".format(len_before_C1))
 
-    return BASKETS, items_dict, [C1], basket_size, items_dict_size, C1_size,load_time, threshold
+        print("C1 contains {} elements, after dropping the infrequent ones".format(len_after_C1))
+
+        print("_--_" * 10)
+
+    return BASKETS, items_dict, [C1], stats, threshold
 
 
 
