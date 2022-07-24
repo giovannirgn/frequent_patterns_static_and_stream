@@ -28,9 +28,7 @@ def second_iteration(BASKETS,list_of_candidates_dict,treshold,stats,verbose):
 
     second_pass_time = time_needed(t0)
 
-    if len(C2) != 0:
-
-        list_of_candidates_dict.append(C2)
+    list_of_candidates_dict.append(C2)
 
     stats["time"]["2nd_pass"] = second_pass_time
 
@@ -79,9 +77,7 @@ def n_th_iteration(BASKET,list_of_candidate_dict,threshold,k,stats,verbose):
 
     len_new_candidate_dict_nth_iteration_after = len(new_candidate_dict)
 
-    if len(new_candidate_dict) != 0:
-
-        list_of_candidate_dict.append(new_candidate_dict)
+    list_of_candidate_dict.append(new_candidate_dict)
 
     n_th_iterations_time = time_needed(t0)
 

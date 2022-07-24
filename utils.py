@@ -12,14 +12,9 @@ def get_size_in_MB(var):
 
 def encode_products(line, item_dict,item_id,C1):
 
-    # encode_products function will get a line from the input file, the item dict, the item id and the dictonary of candidate
-    # at a given point and return the updated version of the item_dict, the updadet vesìrsion of the candidate and the
-    # encoded basket that wil be stored in the list
+    basket = set()
 
-    basket = set()  # initialize the basket
-
-    for el in line.split("__")[2:]:  # for each element splitted by  two underscores (excluding the first two that
-                                     # are the customer_id and the oreder_id
+    for el in line.split("__")[2:]:
 
         if el in item_dict:
 
@@ -134,3 +129,38 @@ def frequent_item_lists(dict_):
                 items_list.append(i)
 
     return list(set(items_list))
+
+
+def hash(list_):
+
+    return ((list_[0]*list_[1])+list_[0]) % 1000000
+
+
+def hash_basket(list_,dict_):
+
+    pairs = combinations_k_elements(list_, 2)
+
+    for pair in pairs:
+
+        index = hash(pair)
+
+        dict_ = check_if_is_in_dict_and_count(index, dict_)
+
+    return dict_
+
+
+def create_bitmap(hash_table, threshold):
+
+    bit_map = [0 for x in range(1000000)]
+
+    for key, value in hash_table.items():
+
+        if value < threshold:
+
+            bit_map[key] = 0
+
+        else:
+
+            bit_map[key] = 1
+
+    return bit_map
