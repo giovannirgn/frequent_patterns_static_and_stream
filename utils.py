@@ -1,5 +1,6 @@
 import time
 import sys
+from random import shuffle
 
 def start_time():
     return time.time()
@@ -164,3 +165,41 @@ def create_bitmap(hash_table, threshold):
             bit_map[key] = 1
 
     return bit_map
+
+
+def possible_combinations(basket,max_len):
+
+    combinations = []
+
+    for k in range(1,max_len+2):
+
+        comb = combinations_k_elements(basket,k)
+
+        for c in comb:
+
+            combinations.append(c)
+
+    return combinations
+
+
+def shuffle_list_of_list(list_):
+
+    ind = [x for x in range(len(list_))]
+
+    shuffle(ind)
+
+    suffled_basket = []
+
+    for index in ind:
+        suffled_basket.append(list_[index])
+
+    return suffled_basket
+
+
+def batch(iterable, n=1):
+
+    l = len(iterable)
+
+    for ndx in range(0, l, n):
+
+        yield iterable[ndx:min(ndx + n, l)]

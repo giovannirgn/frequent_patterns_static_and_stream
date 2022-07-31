@@ -1,7 +1,6 @@
 from utils import *
 
 
-
 def load_data_apriori(txtfile, support,verbose = False):
 
     # import data stored in a text file
@@ -164,10 +163,25 @@ def load_data_pcy(txtfile, support,verbose = False):
 
 
 
+def load_for_stream(txtfile):
 
+    C1 = {}
 
+    BASKETS = []
 
+    items_dict = {}
 
+    item_id = 1
+
+    raw_lines = open(txtfile, 'r', encoding="utf-8").read().splitlines()
+
+    for line in raw_lines:
+
+        basket, items_dict, item_id, C1 = encode_products(line, items_dict, item_id,C1)
+
+        BASKETS.append(basket)
+
+    return shuffle_list_of_list(BASKETS)
 
 
 
