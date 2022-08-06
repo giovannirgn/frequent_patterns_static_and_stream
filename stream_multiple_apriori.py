@@ -1,4 +1,3 @@
-from utils import *
 from apriori import *
 import pickle
 
@@ -91,7 +90,9 @@ def add_to_frequent_items(frequent_items,frequent_items_batch):
 
 
 
-def multiple_apriori(BASKETS,len_batch,support):
+def multiple_apriori(BASKETS,len_batch,support,verbose = True):
+
+    t0 = start_time()
 
     frequent_items = {}
 
@@ -109,7 +110,13 @@ def multiple_apriori(BASKETS,len_batch,support):
 
         count += 1
 
-        print(count)
+        if verbose == True:
+
+            print(f"{round(count/len_batch,2)*100} of the batches processed")
+
+    if verbose == True:
+
+        print("Run multiple apriori on the stream took {}".format(time_needed(t0)))
 
 
     pickle.dump(frequent_items, open(r"results\stream_multiple_apriori.p", "wb"))

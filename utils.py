@@ -47,6 +47,49 @@ def reverse_dict(item_dict):
     return item_dict
 
 
+def order_dict(dict_):
+
+    return dict(sorted(dict_.items(), key=lambda item: item[1],reverse=True))
+
+def decode_dict(dict_,dict_item):
+
+    new_dict = {}
+
+    for key in dict_:
+
+        list_ = []
+
+        if isinstance(key, int):
+
+            new_dict[(dict_item[key],)] = dict_[key]
+
+        else:
+
+            for el in key:
+
+                list_.append(dict_item[el])
+
+        new_dict[tuple(list_)] = dict_[key]
+
+    return  new_dict
+
+def unify_list_of_dict(list_of_dict):
+
+    new_dict = {}
+
+    for dict_ in list_of_dict:
+
+        for key in dict_:
+
+            new_dict[key] = dict_[key]
+
+    return new_dict
+
+def pipeline_dict(list_of_dict,item_dict):
+
+    return order_dict(decode_dict(unify_list_of_dict(list_of_dict),item_dict))
+
+
 def filter_infrequent_items(dict_,threshold):
 
     # deltete itmes from candidate dict if the count is less than the support
@@ -113,6 +156,7 @@ def check_if_is_in_dict_and_count(item,dict_):
 
     return dict_
 
+
 def frequent_item_lists(dict_):
 
     items_list  = []
@@ -167,20 +211,6 @@ def create_bitmap(hash_table, threshold):
     return bit_map
 
 
-def possible_combinations(basket,max_len):
-
-    combinations = []
-
-    for k in range(1,max_len+2):
-
-        comb = combinations_k_elements(basket,k)
-
-        for c in comb:
-
-            combinations.append(c)
-
-    return combinations
-
 
 def shuffle_list_of_list(list_):
 
@@ -203,3 +233,29 @@ def batch(iterable, n=1):
     for ndx in range(0, l, n):
 
         yield iterable[ndx:min(ndx + n, l)]
+
+
+def precision(true_dict,stream_dict):
+
+    count = 0
+
+    for key in stream_dict:
+
+        if key in true_dict:
+
+            count += 1
+
+    return round(count/len(true_dict),1)*100
+
+
+def false_positive(true_dict,stream_dict):
+
+    count = 0
+
+    for key in stream_dict:
+
+        if key not in true_dict:
+
+            count += 1
+
+    return round(count/len(stream_dict),1)*100

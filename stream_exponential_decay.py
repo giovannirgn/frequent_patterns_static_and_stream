@@ -3,102 +3,72 @@ import pickle
 
 def exponential_decay(dict_,penality):
 
-    max_len = 1
-
     for k in dict_:
 
         dict_[k] *= (1-penality)
 
-        if len(k) > max_len:
-
-            max_len = len(k)
-
-    return dict_, max_len
+    return dict_
 
 
-def drop_from_count(dict_, list_):
+def drop_from_count(dict_,drop_threshold):
 
-    del_items = [item for item in dict_ if dict_[item] < 0.5]
+    del_items = [item for item in dict_ if dict_[item] < drop_threshold]
 
     for item in del_items:
 
         del dict_[item]
 
-        if len(item) == 1:
+    return dict_
 
-            list_.remove(item[0])
+def combinations_with_conditions(goodsubset, remainingels, condition):
 
-    return dict_, list_
+    answers = []
+
+    for j in range(len(remainingels)):
+
+        nextsubset = goodsubset + remainingels[j:j + 1]
+
+        if condition(nextsubset):
+
+            answers.append(tuple(nextsubset))
+
+            answers += combinations_with_conditions(nextsubset, remainingels[j + 1:], condition)
+
+    return answers
 
 
-def stream(BASKETS,decay = 0.03):
+def stream_exponential_decay(BASKET,decay = 0.005,drop_threshold = 0.5,verbose = True):
 
-    count = 1
+    freq_items = {}
 
-    frequent_items = {} # initialize emtpy dictionary for frequent items
+    t0 = start_time()
 
-    singletons = []  # initialize list of singletons
+    count = 0
 
-    for basket in BASKETS:
+    for basket in BASKET:
 
-        #print("BASKET",basket)
+        freq_items = exponential_decay(freq_items,decay)
 
-        frequent_items,max_length = exponential_decay(frequent_items,decay)  # moltiply all frequent items by (1-c) and taking
-                                                                             # the lenght of the biggest itemset
+        freq_items = drop_from_count(freq_items,drop_threshold)
 
-        #print("MAX LEN",max_length)
+        to_add = combinations_with_conditions([], basket,
+            lambda l: all(x in freq_items for x in combinations_k_elements(list(l), len(l) - 1)) or (len(l) == 1))
 
-        frequent_items, singletons = drop_from_count(frequent_items,singletons) # remov itemset that drop under score 0.5
-                                                                                # from the dictionary and also from the list
-                                                                                # of singletons
+        for item in to_add:
 
-        filtered_basket = filter_baskets(basket,singletons)  # filter the basket from singletons not present in the list of
-                                                             # singletons
-        #print("FILTERED BASKET",filtered_basket)
+            freq_items = check_if_is_in_dict_and_count(item,freq_items)
 
-        all_combinations = possible_combinations(filtered_basket,max_length) # all possible combination from 1 to the lenght of
-                                                                             # the biggest itemset
-        #print("ALL COMBINATIONS",all_combinations)
-        for combination in all_combinations:
+        if verbose == True:
 
-            #print("COMBINATION",combination)
+            if count % 10000 == 0:
 
-            len_comb = len(combination)
-
-            if len_comb > 1:
-
-                subsets = possible_combinations(combination,len_comb-2) # calculating all subsets of a specific combiantion
-                #print("SUBSETS",subsets)
-                #print("**")
-
-                if all(x in frequent_items for x in subsets):  # if all the subsets are frequent
-
-                    frequent_items = check_if_is_in_dict_and_count(combination,frequent_items) # add the combination to frequent items
-
-        for singletone in basket:
-
-            singletons.append(singletone)
-
-            frequent_items  = check_if_is_in_dict_and_count((singletone,),frequent_items)
-
-        singletons = list(set(singletons))  # remove duplicates from singletons list
+                print(f"{count} basket processed")
 
         count += 1
 
-        if count % 10000 == 0:
+    print("Run exponential decay on the stream took {}".format(time_needed(t0)))
 
-            print(f"There are {len(singletons)} singletons")
-            print(f"There are {len(frequent_items)} itemset in the frequent items dictionary")
-            print(f"The lenght of the biggest itemset is {max_length}")
-            print(f"Basket processed {count}")
-
-            print("_----_"*10)
-
-        #print("SINGLETONS",singletons)
-        #print("FREQUENT ITEMS",frequent_items)
-        #print("___________-")
-
-    pickle.dump(frequent_items, open(r"results\stream_dacay.p", "wb"))
+    pickle.dump(freq_items, open(r"results\stream_exponential_decay_apriori.p", "wb"))
 
 
 

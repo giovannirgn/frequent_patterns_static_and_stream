@@ -1,12 +1,7 @@
 from utils import *
-
+import pickle
 
 def load_data_apriori(txtfile, support,verbose = False):
-
-    # import data stored in a text file
-    # the data structure will be a listt of lists ex [[item1,item2,.....],[item1,....],[],...]:
-    # the function will return the list of baskets, the item dictionary, the candidate for the second pass of the apriori
-    # and the size of the three elements in megabites
 
     t0 = start_time()
 
@@ -73,6 +68,8 @@ def load_data_apriori(txtfile, support,verbose = False):
         print("C1 contains {} elements, after dropping the infrequent ones".format(len_after_C1))
 
         print("_--_" * 10)
+
+    pickle.dump(items_dict, open(r"data\item_dict.p", "wb"))
 
     return BASKETS, items_dict, [C1], stats, threshold
 
