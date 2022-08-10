@@ -1,5 +1,6 @@
-# frequent_patterns_static_and_stream
-This project aims at comparing the performance of two algorithms used in market modeling: the A-priori algorithm and its variant, the Park Chen Yu algorithm.
+# FREQUENT ITEMSET FIXED DATASET VS STREAM
+
+This project aims at comparing the performance of two algorithms used in market basket analysis: the A-priori algorithm and its variant, the Park Chen Yu algorithm.
 
 Both models will be compared in terms of memory requirements and timeliness.
 The algorithms extract frequent patterns on the whole dataset (baskets) therefore they will return all the really frequent items (all the items that exceed given support).
