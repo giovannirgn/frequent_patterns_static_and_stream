@@ -1,7 +1,7 @@
 from apriori import apriori
 from PCY import pcy
 from load_function import load_for_stream
-from stream_exponential_decay import stream_decaying_window
+from stream_decaying_window import stream_decaying_window
 from stream_multiple_apriori import multiple_apriori
 
 

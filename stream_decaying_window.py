@@ -66,7 +66,7 @@ def stream_decaying_window(BASKET,decay = 0.005,drop_threshold = 0.5,verbose = T
 
         count += 1
 
-    print("Run exponential decay on the stream took {}".format(time_needed(t0)))
+    print("Run edecaying window on the stream took {}".format(time_needed(t0)))
 
     pickle.dump(freq_items, open(r"results\stream_exponential_decay_apriori.p", "wb"))
 
