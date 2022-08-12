@@ -147,7 +147,7 @@ def load_data_pcy(txtfile, support,verbose = False):
 
         print("The size of the list of the candidate for the second iteration before filtering the infrequent items is {} MB".format(C1_before_size))
 
-        print("The size of the bitmap is {} MB".format(C1_before_size))
+        print("The size of the bitmap is {} MB".format(bitmap_size))
 
         print("C1 contains {} elements, before dropping the infrequent ones".format(len_before_C1))
 

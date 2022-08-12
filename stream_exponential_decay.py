@@ -1,7 +1,7 @@
 from utils import *
 import pickle
 
-def exponential_decay(dict_,penality):
+def decaying_window(dict_,penality):
 
     for k in dict_:
 
@@ -37,7 +37,7 @@ def combinations_with_conditions(goodsubset, remainingels, condition):
     return answers
 
 
-def stream_exponential_decay(BASKET,decay = 0.005,drop_threshold = 0.5,verbose = True):
+def stream_decaying_window(BASKET,decay = 0.005,drop_threshold = 0.5,verbose = True):
 
     freq_items = {}
 
@@ -47,7 +47,7 @@ def stream_exponential_decay(BASKET,decay = 0.005,drop_threshold = 0.5,verbose =
 
     for basket in BASKET:
 
-        freq_items = exponential_decay(freq_items,decay)
+        freq_items = decaying_window(freq_items,decay)
 
         freq_items = drop_from_count(freq_items,drop_threshold)
 

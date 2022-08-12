@@ -178,7 +178,7 @@ def frequent_item_lists(dict_):
 
 def hash(list_):
 
-    return ((list_[0]*list_[1])+list_[0]) % 1000000
+    return ((list_[0]*list_[1])+list_[0]) % 100000
 
 
 def hash_basket(list_,dict_):
@@ -196,7 +196,7 @@ def hash_basket(list_,dict_):
 
 def create_bitmap(hash_table, threshold):
 
-    bit_map = [0 for x in range(1000000)]
+    bit_map = [0 for x in range(100000)]
 
     for key, value in hash_table.items():
 
