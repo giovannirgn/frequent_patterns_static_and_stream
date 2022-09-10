@@ -102,6 +102,8 @@ def multiple_apriori(BASKETS,len_batch,support,verbose = True):
 
     batches = list(batch(BASKETS,n=len_batch))
 
+    n_batches = len(batches)
+
     for batch_ in batches:
 
         frequent_items_batch = apriori_stream(batch_, threshold)
@@ -112,7 +114,7 @@ def multiple_apriori(BASKETS,len_batch,support,verbose = True):
 
         if verbose == True:
 
-            print(f"{round(count/len_batch,2)*100} of the batches processed")
+            print(f"{round((count/n_batches),2)*100}% of the batches processed")
 
     if verbose == True:
 
